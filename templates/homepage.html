@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">-->
+        <title>Clicka</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
+    </head>
+    <body>
+        <div class='page'>
+            <div class='frame'>
+                <div class="title">
+                    <h1>Clicka</h1>
+                </div>
+                <div class=hero>
+                    <h3 id="bank_text"></h3>
+                    <h2>Production</h2>
+                    <button id="a_btn" onclick="abtn()"></button>
+                    <h2>Shop</h2>
+                    <button id="shop_a" onclick="buya()"></button>
+                </div>
+            </div>
+        </div>
+        <script>
+            var bank = 0.0
+            var a_cost = 20.0
+            var a_rate = 1.0
+            var upgrade_rate = 1.1
+            var cost_increase = 1.3
+
+            function roundToTwo(num) {    
+                return +(Math.round(num + "e+2")  + "e-2");
+            }
+
+            function updateshopa(){
+                var shop_a = document.getElementById("shop_a")
+                shop_a.innerHTML = `A<br> Upgraded rate: ${roundToTwo(a_rate*upgrade_rate)}/click<br>Cost: \$${roundToTwo(a_cost)}`
+            }
+
+            function updatea(){
+                var a_btn = document.getElementById("a_btn")
+                a_btn.innerHTML = `A<br> Rate: ${roundToTwo(a_rate)}/click`
+            }
+
+            function updatebank(){
+                var bank_text = document.getElementById("bank_text")
+                var shop_a = document.getElementById("shop_a")
+                if (bank>=a_cost) {shop_a.style.backgroundColor = "green"} else {shop_a.style.backgroundColor = "red"}
+                bank_text.innerHTML = `Wallet: \$${roundToTwo(bank)}`
+            }
+
+            function abtn(){
+                bank += a_rate
+                updatea(); updatebank();
+            }
+
+            function buya(){
+                if (bank >= a_cost){
+                    bank -= a_cost
+                    a_rate = roundToTwo(a_rate*upgrade_rate)
+                    a_cost = roundToTwo(a_cost*cost_increase)
+                
+                updatea(); updatebank(); updateshopa()
+                } else{
+                    alert("Insufficient Funds")
+                }
+            }
+            updatea(); updatebank(); updateshopa()
+        </script>
+    </body>
+</html>
